@@ -55,7 +55,7 @@ public class JDBCExampleTest {
 
     //JDBC TEMPLATE DELETE TEST EXAMPLE
     @Test
-    public void deleteUSERTest() {
+    public void deleteUserTest() {
         Assert.assertTrue(jdbcExample.deleteUSER(4));
     }
 

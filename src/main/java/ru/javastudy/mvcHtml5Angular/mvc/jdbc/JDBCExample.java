@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.javastudy.mvcHtml5Angular.mvc.bean.DBLog;
 import ru.javastudy.mvcHtml5Angular.mvc.bean.User;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,8 +25,13 @@ public class JDBCExample {
     @Autowired
     DataSource dataSource; //look to application-context.xml bean id='dataSource' definition
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @PostConstruct
+    public void init() {
+        System.out.println("JDBCExample postConstruct is called. datasource = " + dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
 
     //JDBC TEMPLATE INSERT EXAMPLE
@@ -48,7 +54,7 @@ public class JDBCExample {
         final String QUERY_SQL = "SELECT * FROM LOG ORDER BY IDLOG";
         List<DBLog> dbLogList = this.jdbcTemplate.query(QUERY_SQL, new RowMapper<DBLog>() {
             public DBLog mapRow(ResultSet resulSet, int rowNum) throws SQLException {
-                System.out.println("Getting log: "+ rowNum + " content: " + resulSet.getString("LOGSTRING"));
+                System.out.println("Getting log: " + rowNum + " content: " + resulSet.getString("LOGSTRING"));
                 DBLog dbLog = new DBLog();
                 dbLog.setIDLOG(resulSet.getInt("IDLOG"));
                 dbLog.setLOGSTRING(resulSet.getString("LOGSTRING"));
@@ -78,7 +84,7 @@ public class JDBCExample {
     public boolean deleteUSER(int iduser) {
         System.out.println("JDBCExample: deleteUSER called");
         final String DELETE_SQL = "DELETE FROM USER WHERE IDUSER LIKE ?";
-        int result = jdbcTemplate.update(DELETE_SQL,new Object[]{iduser});
+        int result = jdbcTemplate.update(DELETE_SQL, new Object[]{iduser});
         System.out.println("r" + result);
         if (result > 0) {
             System.out.println("User is deleted: " + iduser);
@@ -89,10 +95,10 @@ public class JDBCExample {
     }
 
     //JDBC TEMPLATE UPDATE EXAMPLE
-    public boolean updateUserEnable(User u, boolean enable)  {
+    public boolean updateUserEnable(User u, boolean enable) {
         System.out.println("JDBCExample: updateUserEnable called");
         final String UPDATE_SQL = "UPDATE USER SET ENABLED = ? WHERE USERNAME = ?";
-        int result = jdbcTemplate.update(UPDATE_SQL,new Object[]{enable, u.getUsername()});
+        int result = jdbcTemplate.update(UPDATE_SQL, new Object[]{enable, u.getUsername()});
         if (result > 0) {
             System.out.println("User is updated: " + u.getUsername());
             return true;

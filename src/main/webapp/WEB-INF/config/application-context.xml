@@ -19,7 +19,6 @@
 
 <!--find property file. See bean id='dataSource' for example ${jdbc.hsqldb.driverClass}-->
     <context:property-placeholder location="classpath:util.properties" />
-    <context:component-scan base-package="ru.javastudy.mvcHtml5Angular.mvc"/>
 
     <!-- XML Bean Definitions -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -62,7 +61,12 @@
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" >
         <!--packagesToScan - search Entity and mapping them -->
-        <property name="packagesToScan" value="ru.javastudy.mvcHtml5Angular.mvc.bean" />
+        <property name="packagesToScan">
+            <list>
+                <value>ru.javastudy.mvcHtml5Angular.mvc.bean</value>
+                <value>ru.javastudy.mvcHtml5Angular.mvc.rest.model</value>
+            </list>
+        </property>
         <property name="dataSource" ref="dataSource" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >

@@ -2,6 +2,7 @@ package ru.javastudy.mvcHtml5Angular.mvc.orm;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javastudy.mvcHtml5Angular.mvc.bean.DBLog;
 import ru.javastudy.mvcHtml5Angular.mvc.bean.User;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ public class ORMService {
         System.out.println("ORMService queryFindUserById is called");
         return entityManager.find(User.class, id);
     }
+
 
     public boolean updateUser(int id, boolean enabled) {
         System.out.println("ORMService updateUser is called");
